@@ -9,13 +9,12 @@ namespace GymManagmentDAL.Data.Configurations
 {
     internal class MemberConfiguration :GymUserConfiguration<Member>, IEntityTypeConfiguration<Member>
     {
-        public void Configure(EntityTypeBuilder<Member> builder)
+        public new void Configure(EntityTypeBuilder<Member> builder)
         {
 
             builder.Property(o => o.CreatedAt)
                 .HasColumnName("JoinDate")
                 .HasDefaultValueSql("GetDate()");
-
 
             base.Configure(builder);
            

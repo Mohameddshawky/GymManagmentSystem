@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace GymManagmentDAL.Entites
 {
+    [Owned]
     public class HealthRecord:BaseEntity
     {
 

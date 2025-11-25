@@ -9,7 +9,7 @@ namespace GymManagmentDAL.Data.Configurations
 {
     internal class TrainerConfigurations :GymUserConfiguration<Trainer>, IEntityTypeConfiguration<Trainer>
     {
-        public void Configure(EntityTypeBuilder<Trainer> builder)
+        public new void Configure(EntityTypeBuilder<Trainer> builder)
         {
             builder.Property(o => o.CreatedAt)
           .HasColumnName("HireDate")
