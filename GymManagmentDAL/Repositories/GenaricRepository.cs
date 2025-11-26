@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GymManagmentDAL.Repositories
 {
-    internal class GenaricRepository<T>(GymDbcontext context) : IGenaricRepository<T> where T : BaseEntity
+    internal class GenaricRepository<T>(GymDbcontext context) : IGenaricRepository<T> where T : BaseEntity,new()
     {
         public async Task AddAsync(T data)
         {
