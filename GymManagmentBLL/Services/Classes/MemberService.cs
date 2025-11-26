@@ -6,11 +6,11 @@ using System.Text;
 
 namespace GymManagmentBLL.Services.Classes
 {
-    public class MemberService: IMemberService
+    public class MemberService : IMemberService
     {
-        Task<IEnumerable<MemberViewModel>> GetAllllMMemberAsync()
+        public Task<IEnumerable<MemberViewModel>> GetAllllMMemberAsync()
         {
-
+            throw new NotImplementedException();
         }
     }
 }
