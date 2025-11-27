@@ -1,0 +1,52 @@
+﻿using GymManagmentDAL.Entites.Enums;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+
+namespace GymManagmentBLL.ViewModels.MemberViewModels
+{
+    public class CreateMemberViewModel
+    {
+        [Required(ErrorMessage ="Name is Required")]
+        [StringLength(50,MinimumLength =2,ErrorMessage ="Name Between 2 and 50 charachters")]
+        [RegularExpression(@"^[a-zA-Z\s]+$",ErrorMessage ="Name must be only letters and spaces")]
+        public string  Name { get; set; }=string.Empty;
+
+        [DataType(DataType.EmailAddress)]//ui hint 
+        [Required(ErrorMessage ="Email is Required")]
+        [EmailAddress(ErrorMessage ="Invalid Email Address")]//validation
+        [StringLength(100,MinimumLength =5,ErrorMessage ="Email Must be Between 2 and 50 charachters")]
+        public string Email { get; set; } = string.Empty;
+
+        [DataType(DataType.PhoneNumber)]//ui hint 
+        [Required(ErrorMessage = "PhoneNumber is Required")]
+        [Phone(ErrorMessage ="Invalid Phone Number")]//validation
+        [StringLength(12, MinimumLength = 12, ErrorMessage = "PhoneNumber Must be Between 2 and 50 charachters")]
+        [RegularExpression(@"^(010|011|012|015)\d{8}$", ErrorMessage = "Phone number must be valid Egypyain phone number")]
+        public string PhoneNumber { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "DateOfBirth is Required")]
+        [DataType(DataType.Date)]
+        public DateOnly DateOfBirth { get; set; }
+
+        [Required(ErrorMessage = "Gender is Required")]
+        public Gender Gender { get; set; }
+
+        [Required(ErrorMessage = "BuildingNumber is Required")]
+        [RegularExpression("^[1-9][0-9]*$", ErrorMessage = "Building number must be a positive number starting from 1")]
+        public string BuildingNumber { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Street is Required")]
+        [StringLength(30, MinimumLength = 2, ErrorMessage = "Street Must be Between 2 and 30 charachters")]
+
+        public string Street { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "City is Required")]
+        [StringLength(30, MinimumLength = 2, ErrorMessage = "City Must be Between 2 and 30 charachters")]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "City must be only letters and spaces")]
+        public string City { get; set; } = string.Empty;
+        [Required(ErrorMessage ="Health Record is Requird")]
+        public HealthRecordViewModel healthRecordViewModel { get; set; } = null!;
+    }
+}

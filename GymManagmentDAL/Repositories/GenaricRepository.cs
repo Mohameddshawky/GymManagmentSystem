@@ -4,12 +4,13 @@ using GymManagmentDAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace GymManagmentDAL.Repositories
 {
-    internal class GenaricRepository<T>(GymDbcontext context) : IGenaricRepository<T> where T : BaseEntity,new()
+    public class GenaricRepository<T>(GymDbcontext context) : IGenaricRepository<T> where T : BaseEntity,new()
     {
         public async Task AddAsync(T data)
         {
@@ -22,9 +23,13 @@ namespace GymManagmentDAL.Repositories
 
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
-            => await context.Set<T>().ToListAsync();
-        
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? check = null)
+        {
+            if (check == null)
+                return await context.Set<T>().ToListAsync();
+          
+              return await  context.Set<T>().Where(check).ToListAsync();
+        }
 
         public async Task<T?> GetAsync(int id)
             => await context.Set<T>().FindAsync(id);

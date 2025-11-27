@@ -7,7 +7,8 @@ namespace GymManagmentBLL.Services.Interfaces
 {
     public interface IMemberService
     {
-        Task<IEnumerable<MemberViewModel>> GetAllllMMemberAsync();
+        Task<IEnumerable<MemberViewModel>> GetAllMemberAsync();
+        Task<bool> CreateMemberAsync(CreateMemberViewModel model);
 
     }
 }
