@@ -26,6 +26,14 @@ namespace GymManagmentBLL.Mapping
                 des=>des.MapFrom(src=>src.Street))
                 .ForMember(x=>x.Address.City,
                 des=>des.MapFrom(src=>src.City));
+
+            CreateMap<Member,UpdateMemberViewModel>()
+                .ForMember(x => x.BuildingNumber,
+                des => des.MapFrom(src => src.Address.BuildingNumber))
+                .ForMember(x => x.Street,
+                des => des.MapFrom(src => src.Address.Street))
+                .ForMember(x => x.City,
+                des => des.MapFrom(src => src.Address.City)).ReverseMap();
         }
     }
 }

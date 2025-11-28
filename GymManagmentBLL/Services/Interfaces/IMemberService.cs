@@ -11,6 +11,11 @@ namespace GymManagmentBLL.Services.Interfaces
         Task<bool> CreateMemberAsync(CreateMemberViewModel model);
 
         Task<MemberViewModel?> GetMemberDetailsAsync(int id);
-        Task<HealthRecordViewModel> GetMemberHealthDetailsAsync(int id);  
+        Task<HealthRecordViewModel> GetMemberHealthDetailsAsync(int id);
+        
+        Task<UpdateMemberViewModel> GetMemberToUbdateAsync(int id);
+
+        Task<bool> UpdateMemberAsync(int id,UpdateMemberViewModel model);
+        Task<bool> DeleteMemberAsync(int id);
     }
 }
