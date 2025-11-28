@@ -8,13 +8,18 @@ using System.Text;
 
 namespace GymManagmentDAL.Data.Contexts
 {
-    internal class GymDbcontext : DbContext
+    public class GymDbcontext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public GymDbcontext(DbContextOptions<GymDbcontext> options):base(options)
         {
 
-            optionsBuilder.UseSqlServer("Server=SHAWKY\\MSQLSERVER;Database=GymManagmentDB;Trusted_Connection=True;TrustServerCertificate=True;");
         }
+       
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+
+        //    optionsBuilder.UseSqlServer("Server=SHAWKY\\MSQLSERVER;Database=GymManagmentDB;Trusted_Connection=True;TrustServerCertificate=True;");
+        //}
         override protected void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly()); modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
