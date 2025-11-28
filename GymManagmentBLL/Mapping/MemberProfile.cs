@@ -16,6 +16,7 @@ namespace GymManagmentBLL.Mapping
                 .ForMember(x=>x.Gender,
                 des=>des.MapFrom(src=>src.Gender.ToString()))
                 .ReverseMap();
+
             CreateMap<CreateMemberViewModel, Member>()
                 .ForMember(x => x.healthRecord,
                 des => des.MapFrom(src => src.healthRecordViewModel))
