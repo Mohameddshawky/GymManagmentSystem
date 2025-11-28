@@ -13,7 +13,7 @@ builder.Services.AddDbContext<GymDbcontext>(
 
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     });
-builder.Services.AddScoped(typeof(IGenaricRepository<>), typeof(GenaricRepository<>));
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddAutoMapper(m => m.AddProfile(new MemberProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new HealthRecordProfile()));
 

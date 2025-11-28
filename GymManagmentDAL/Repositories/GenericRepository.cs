@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace GymManagmentDAL.Repositories
 {
-    public class GenaricRepository<T>(GymDbcontext context) : IGenaricRepository<T> where T : BaseEntity,new()
+    public class GenericRepository<T>(GymDbcontext context) : IGenericRepository<T> where T : BaseEntity,new()
     {
         public async Task AddAsync(T data)
         {
@@ -35,8 +35,7 @@ namespace GymManagmentDAL.Repositories
             => await context.Set<T>().FindAsync(id);
         
 
-        public async Task<int> SaveChangesAsync()
-            =>await context.SaveChangesAsync();
+        
 
         public Task<IEnumerable<T>> SearchAsync(string name)
         {

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace GymManagmentDAL.Repositories.Interfaces
 {
-    public interface IGenaricRepository<T> where T : BaseEntity, new()          
+    public interface IGenericRepository<T> where T : BaseEntity, new()          
     {
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T,bool>>?check=null);
         Task<IEnumerable<T>> SearchAsync(string name);
@@ -14,6 +14,6 @@ namespace GymManagmentDAL.Repositories.Interfaces
         Task AddAsync(T data);
         void Update(T data);
         void Delete(T data);
-        Task<int> SaveChangesAsync();    
+      
     }
 }
