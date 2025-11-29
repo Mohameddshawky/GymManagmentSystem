@@ -16,6 +16,7 @@ builder.Services.AddDbContext<GymDbcontext>(
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddAutoMapper(m => m.AddProfile(new MemberProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new HealthRecordProfile()));
+builder.Services.AddAutoMapper(m => m.AddProfile(new PlanProfile()));
 
 var app = builder.Build();
 
