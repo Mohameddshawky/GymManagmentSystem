@@ -15,5 +15,7 @@ namespace GymManagmentBLL.Services.Interfaces
         Task<UpdateTrainerViewModel> GetTrainerToUbdateAsync(int id);
 
         Task<bool> UpdateTrainerAsync(int id, UpdateTrainerViewModel model);
+
+        Task<bool> DeleteTrainerAsync(int id);
     }
 }

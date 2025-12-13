@@ -99,5 +99,24 @@ namespace GymManagmentBLL.Services.Classes
 
             
         }
+
+        public async Task<bool> DeleteTrainerAsync(int id)
+        {
+            var trainer = await unitOfWork.GetRepository<Trainer>().GetAsync(id);
+
+            var check=(await unitOfWork.GetRepository<Session>().GetAllAsync(x=>x.TrainerId==id&&x.StartDate>DateTime.Now)).Any();
+            if (trainer is null||check) return false;
+
+            try
+            {
+                unitOfWork.GetRepository<Trainer>().Delete(trainer);
+                return await unitOfWork.SaveChangesAsync() > 0;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
     }
 }
