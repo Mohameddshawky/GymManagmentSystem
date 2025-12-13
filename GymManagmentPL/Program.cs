@@ -3,6 +3,7 @@ using GymManagmentDAL.Repositories.Interfaces;
 using GymManagmentDAL.Repositories;
 using GymManagmentBLL.Mapping;
 using Microsoft.EntityFrameworkCore;
+using GymManagmentDAL.Data.DataSeed;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,19 @@ builder.Services.AddAutoMapper(m => m.AddProfile(new HealthRecordProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new PlanProfile()));
 
 var app = builder.Build();
+
+// Seed Data
+ using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<GymDbcontext>();
+    var pendingMigrations = context.Database.GetPendingMigrations();
+    if (pendingMigrations?.Any()??false)
+    {
+        context.Database.Migrate();
+    }
+    GymDbContextSeeding.SeedData(context);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
