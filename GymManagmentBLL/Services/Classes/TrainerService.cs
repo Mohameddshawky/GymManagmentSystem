@@ -54,5 +54,69 @@ namespace GymManagmentBLL.Services.Classes
                 (await unitOfWork.GetRepository<Trainer>().GetAllAsync(x => x.Email == email || x.PhoneNumber == phoneNumber)).Any();
             return check;
         }
+
+        public async Task<TrainerDetailsViewModel> GetTrainerDetailsAsync(int id)
+        {
+            var trainer =await unitOfWork.GetRepository<Trainer>().GetAsync(id);
+            if (trainer is null) return null!;
+            var result = mapper.Map<TrainerDetailsViewModel>(trainer);
+            return result;
+        }
+
+        public async Task<UpdateTrainerViewModel> GetTrainerToUbdateAsync(int id)
+        {
+            var trainer =await unitOfWork.GetRepository<Trainer>().GetAsync(id);
+
+            if(trainer is null) return null!;
+
+            var result = mapper.Map<UpdateTrainerViewModel>(trainer);
+            return result;
+        }
+
+        public async Task<bool> UpdateTrainerAsync(int id, UpdateTrainerViewModel model)
+        {
+             var trainer =await unitOfWork.GetRepository<Trainer>().GetAsync(id);
+            if(trainer is null) return false;
+            try
+            {
+                if (await CheckIfUnique(model.Email, model.PhoneNumber)) return false;
+
+                trainer.Name = model.Name;
+                trainer.Email = model.Email;
+                trainer.PhoneNumber = model.PhoneNumber;
+                trainer.Address.BuildingNumber = model.BuildingNumber;
+                trainer.Address.Street = model.Street;
+                trainer.Address.City = model.City;
+                trainer.Specialties = model.Specialization;
+                unitOfWork.GetRepository<Trainer>().Update(trainer);
+                return await unitOfWork.SaveChangesAsync() > 0;
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            
+        }
+
+        public async Task<bool> DeleteTrainerAsync(int id)
+        {
+            var trainer = await unitOfWork.GetRepository<Trainer>().GetAsync(id);
+
+            var check=(await unitOfWork.GetRepository<Session>().GetAllAsync(x=>x.TrainerId==id&&x.StartDate>DateTime.Now)).Any();
+            if (trainer is null||check) return false;
+
+            try
+            {
+                unitOfWork.GetRepository<Trainer>().Delete(trainer);
+                return await unitOfWork.SaveChangesAsync() > 0;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
     }
 }
