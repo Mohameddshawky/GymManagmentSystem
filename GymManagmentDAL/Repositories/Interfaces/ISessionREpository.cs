@@ -9,6 +9,7 @@ namespace GymManagmentDAL.Repositories.Interfaces
     {
         Task<IEnumerable<Session>> GetSessionsWithTrainerAndCategoryAsync();
 
-        int GetCountOfBookedSlots(int id);
+        Task<int> GetCountOfBookedSlotsAsync(int id);
+        Task<Session?> GetByIdWithIncludeAsync(int id);
     }
 }

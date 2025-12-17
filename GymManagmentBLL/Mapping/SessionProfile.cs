@@ -11,7 +11,18 @@ namespace GymManagmentBLL.Mapping
     {
         public SessionProfile()
         {
-            CreateMap<Session, SessionViewModel>();
+            CreateMap<Session, SessionViewModel>()
+                .ForMember(x => x.CategoryName, src => src.MapFrom
+                (des => des.SessionCategory.CategoryName))
+                .ForMember(x => x.TrainerName, src => src.MapFrom
+                (des => des.SessionTrainer.Name))
+                .ForMember(x => x.TrainerName, src => src.MapFrom
+                (des => des.SessionTrainer.Name))
+                .ForMember(x=>x.AvalibleSlots,op=>op.Ignore());
+
+            CreateMap<CreateSessionViewModel, Session>();
+
+
 
         }
     }

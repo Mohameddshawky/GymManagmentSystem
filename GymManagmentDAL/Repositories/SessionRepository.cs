@@ -17,7 +17,14 @@ namespace GymManagmentDAL.Repositories
         {
             this.dbcontext = dbcontext;
         }
-        public async Task<int> GetCountOfBookedSlots(int id)
+
+        public async Task<Session?> GetByIdWithIncludeAsync(int id)
+        {
+            return await dbcontext.sessions.Include(x => x.SessionTrainer)
+              .Include(x => x.SessionCategory).FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<int> GetCountOfBookedSlotsAsync(int id)
         {
             return await dbcontext.memberSessions.CountAsync(x => x.Id == id);
         }
@@ -27,5 +34,7 @@ namespace GymManagmentDAL.Repositories
             return await dbcontext.sessions.Include(x => x.SessionTrainer)
                 .Include(x => x.SessionCategory).ToListAsync();
         }
+
+        
     }
 }
