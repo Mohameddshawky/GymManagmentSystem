@@ -18,6 +18,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddAutoMapper(m => m.AddProfile(new MemberProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new HealthRecordProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new PlanProfile()));
+builder.Services.AddAutoMapper(m => m.AddProfile(new SessionProfile()));
 
 var app = builder.Build();
 
