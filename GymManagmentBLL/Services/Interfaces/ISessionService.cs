@@ -11,5 +11,9 @@ namespace GymManagmentBLL.Services.Interfaces
         Task<SessionViewModel?> GetSessionDetailsAsync(int id);
 
         Task<bool> CreateSessionAsync(CreateSessionViewModel session);
+        Task<UpdateSessionViewModel?> GetToUpdateSessionAsync(int id);
+        Task<bool> UpdateSessionAsync(int id, UpdateSessionViewModel model);
+        Task<bool> DeleteSessionAsync(int id);
+
     }
 }
