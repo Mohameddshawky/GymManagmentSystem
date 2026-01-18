@@ -53,8 +53,13 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Home}/{action=Index}/{id:int?}")
     .WithStaticAssets();
+//app.MapControllerRoute(
+//    name: "trainers",     name use in redirect to route 
+//    pattern: "Coach/{action}",
+//    defaults: new { controller = "Trainer" }) ;                  
+   
 
 
 app.Run();
