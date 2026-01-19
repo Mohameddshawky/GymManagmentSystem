@@ -4,6 +4,8 @@ using GymManagmentDAL.Repositories;
 using GymManagmentBLL.Mapping;
 using Microsoft.EntityFrameworkCore;
 using GymManagmentDAL.Data.DataSeed;
+using GymManagmentBLL.Services.Interfaces;
+using GymManagmentBLL.Services.Classes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,7 @@ builder.Services.AddDbContext<GymDbcontext>(
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     });
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddScoped<ISessionREpository,SessionRepository>(); 
 builder.Services.AddAutoMapper(m => m.AddProfile(new MemberProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new HealthRecordProfile()));
