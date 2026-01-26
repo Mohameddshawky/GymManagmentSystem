@@ -17,5 +17,13 @@ namespace GymManagmentPL.Controllers
             var members =await memberService.GetAllMemberAsync();
             return View(members);
         }
+        public async Task<IActionResult>Details(int id)
+        {
+            if(id<0)return RedirectToAction(nameof(Index));
+            var MemberDetails = await memberService.GetMemberDetailsAsync(id);
+            if (MemberDetails == null) return RedirectToAction(nameof(Index));
+            
+            return View(MemberDetails);
+        }
     }
 }

@@ -86,7 +86,7 @@ namespace GymManagmentBLL.Services.Classes
                 DateOfBirth = member.DateOfBirth.ToString("yyyy-MM-dd"),
                 Address = $" {member.Address.BuildingNumber} , {member.Address.Street} , {member.Address.City}",
             };
-            var Activemembership = (await unitOfWork.GetRepository<MemberShip>().GetAllAsync(x => x.MemberId == member.Id&&x.Statue=="Active")).FirstOrDefault();
+            var Activemembership = (await unitOfWork.GetRepository<MemberShip>().GetAllAsync(x => x.MemberId == member.Id)).FirstOrDefault(x=>x.Statue == "Active");
             if(Activemembership != null)
             {               
                 result.MemberShipStartDate = Activemembership.CreatedAt.ToString("yyyy-MM-dd");
