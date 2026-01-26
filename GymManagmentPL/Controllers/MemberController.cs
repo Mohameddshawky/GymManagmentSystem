@@ -25,5 +25,12 @@ namespace GymManagmentPL.Controllers
             
             return View(MemberDetails);
         }
+        public async  Task<IActionResult>HealthRecordDetails(int id)
+        {
+            if (id < 0) return RedirectToAction(nameof(Index));
+            var MemberHealth = await memberService.GetMemberHealthDetailsAsync(id);
+            if(MemberHealth == null) return RedirectToAction(nameof(Index));
+            return View(MemberHealth);
+        }
     }
 }
