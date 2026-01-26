@@ -1,4 +1,5 @@
 ﻿using GymManagmentBLL.Services.Interfaces;
+using GymManagmentBLL.ViewModels.MemberViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -48,6 +49,29 @@ namespace GymManagmentPL.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(MemberHealth);
+        }
+
+        public async Task<IActionResult> Create()
+        {
+            return View();
+        }
+        public async Task<IActionResult> CreateMember(CreateMemberViewModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+               bool res= await memberService.CreateMemberAsync(model);
+                if(res)
+                    TempData["SuccessMessage"] = "Member created successfully.";
+                else
+                    TempData["ErrorMessage"] = "Failed to create Member.";
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ModelState.AddModelError("DataInvalid", "Please correct the errors and try again.");
+                return View(nameof(Create), model);
+            }
         }
     }
 }
