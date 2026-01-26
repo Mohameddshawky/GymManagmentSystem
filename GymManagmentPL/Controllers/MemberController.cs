@@ -73,5 +73,24 @@ namespace GymManagmentPL.Controllers
                 return View(nameof(Create), model);
             }
         }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (id < 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Member Id.";
+                return RedirectToAction(nameof(Index));
+
+            }
+            var MemberDetails = await memberService.GetMemberDetailsAsync(id);
+            if (MemberDetails == null)
+            {
+                TempData["ErrorMessage"] = "Member not found.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(MemberDetails);
+
+        }
     }
 }
