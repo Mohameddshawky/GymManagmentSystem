@@ -19,17 +19,34 @@ namespace GymManagmentPL.Controllers
         }
         public async Task<IActionResult>Details(int id)
         {
-            if(id<0)return RedirectToAction(nameof(Index));
+            if (id < 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Member Id.";
+                return RedirectToAction(nameof(Index));
+                
+            }
             var MemberDetails = await memberService.GetMemberDetailsAsync(id);
-            if (MemberDetails == null) return RedirectToAction(nameof(Index));
+            if (MemberDetails == null)
+            {
+                TempData["ErrorMessage"] = "Member not found.";
+                return RedirectToAction(nameof(Index));
+            }
             
             return View(MemberDetails);
         }
         public async  Task<IActionResult>HealthRecordDetails(int id)
         {
-            if (id < 0) return RedirectToAction(nameof(Index));
+            if (id < 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Member Id.";
+                return RedirectToAction(nameof(Index));
+            }
             var MemberHealth = await memberService.GetMemberHealthDetailsAsync(id);
-            if(MemberHealth == null) return RedirectToAction(nameof(Index));
+            if (MemberHealth == null)
+            {
+                TempData["ErrorMessage"] = "Member Health Record not found.";
+                return RedirectToAction(nameof(Index));
+            }
             return View(MemberHealth);
         }
     }
