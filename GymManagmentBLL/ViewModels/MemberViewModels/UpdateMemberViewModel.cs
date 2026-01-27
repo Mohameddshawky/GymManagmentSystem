@@ -8,7 +8,7 @@ namespace GymManagmentBLL.ViewModels.MemberViewModels
     public class UpdateMemberViewModel
     {
         public string Name { get; set; } = string.Empty;
-        public string  Photo { get; set; } = string.Empty;
+        public string?  Photo { get; set; } = string.Empty;
 
         [DataType(DataType.EmailAddress)]//ui hint 
         [Required(ErrorMessage = "Email is Required")]
