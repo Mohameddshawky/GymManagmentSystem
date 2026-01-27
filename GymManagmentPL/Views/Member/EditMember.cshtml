@@ -13,9 +13,8 @@
                                         style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #fff; margin-top: -60px;" />
                                 </div>
                                 <div class="card-body text-center">
-                                    <h2 class="mb-1 text-primary-color">Name</h2>
-                                        <form method="post" asp-action="EditMember">
-                                        <input type="hidden" asp-for="id" />
+                                    <h2 class="mb-1 text-primary-color">@Model.Name</h2>
+                        <form method="post" asp-action="EditMember" >
 
 							            <input hidden readonly asp-for="Name" />
 							            <input hidden readonly asp-for="Photo" />

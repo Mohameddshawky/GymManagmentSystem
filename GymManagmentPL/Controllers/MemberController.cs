@@ -74,7 +74,7 @@ namespace GymManagmentPL.Controllers
             }
         }
 
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> EditMember(int id)
         {
             if (id < 0)
             {
@@ -107,7 +107,7 @@ namespace GymManagmentPL.Controllers
             else
             {
                 ModelState.AddModelError("DataInvalid", "Please correct the errors and try again.");
-                return View(nameof(Edit), model);
+                return View(nameof(EditMember), model);
             }
         }
     }
