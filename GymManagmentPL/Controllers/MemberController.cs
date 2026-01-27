@@ -15,16 +15,16 @@ namespace GymManagmentPL.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var members =await memberService.GetAllMemberAsync();
+            var members = await memberService.GetAllMemberAsync();
             return View(members);
         }
-        public async Task<IActionResult>Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
             if (id < 0)
             {
                 TempData["ErrorMessage"] = "Invalid Member Id.";
                 return RedirectToAction(nameof(Index));
-                
+
             }
             var MemberDetails = await memberService.GetMemberDetailsAsync(id);
             if (MemberDetails == null)
@@ -32,10 +32,10 @@ namespace GymManagmentPL.Controllers
                 TempData["ErrorMessage"] = "Member not found.";
                 return RedirectToAction(nameof(Index));
             }
-            
+
             return View(MemberDetails);
         }
-        public async  Task<IActionResult>HealthRecordDetails(int id)
+        public async Task<IActionResult> HealthRecordDetails(int id)
         {
             if (id < 0)
             {
@@ -60,8 +60,8 @@ namespace GymManagmentPL.Controllers
 
             if (ModelState.IsValid)
             {
-               bool res= await memberService.CreateMemberAsync(model);
-                if(res)
+                bool res = await memberService.CreateMemberAsync(model);
+                if (res)
                     TempData["SuccessMessage"] = "Member created successfully.";
                 else
                     TempData["ErrorMessage"] = "Failed to create Member.";
@@ -93,11 +93,11 @@ namespace GymManagmentPL.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> EditMember([FromRoute]int id,UpdateMemberViewModel model)
+        public async Task<IActionResult> EditMember([FromRoute] int id, UpdateMemberViewModel model)
         {
             if (ModelState.IsValid)
             {
-                bool res = await memberService.UpdateMemberAsync(id,model);
+                bool res = await memberService.UpdateMemberAsync(id, model);
                 if (res)
                     TempData["SuccessMessage"] = "Member updated successfully.";
                 else
@@ -109,6 +109,35 @@ namespace GymManagmentPL.Controllers
                 ModelState.AddModelError("DataInvalid", "Please correct the errors and try again.");
                 return View(nameof(EditMember), model);
             }
+        }
+
+        public async Task<IActionResult> DeleteMember(int id)
+        {
+            if (id < 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Member Id.";
+                return RedirectToAction(nameof(Index));
+            }
+            var res = await memberService.GetMemberDetailsAsync(id);
+            if (res is null)
+            {
+                TempData["ErrorMessage"] = " Member Not Found.";
+                return RedirectToAction(nameof(Index));
+
+            }
+            ViewBag.memberId = id;
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirm([FromForm] int id)
+        {
+            var res = await memberService.DeleteMemberAsync(id);
+            if (res)
+                TempData["SuccessMessage"] = "Member deleted successfully.";
+            else
+                TempData["ErrorMessage"] = "Failed to delete Member.";
+            return RedirectToAction(nameof(Index));
+
         }
     }
 }

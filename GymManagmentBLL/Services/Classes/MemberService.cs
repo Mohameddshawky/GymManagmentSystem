@@ -38,8 +38,9 @@ namespace GymManagmentBLL.Services.Classes
         {
             var member =await unitOfWork.GetRepository<Member>().GetAsync(id);
             if(member == null) return false;
-            var HasActiveSessions=(await unitOfWork.GetRepository<MemberSession>().GetAllAsync(x=>x.MemberId==id&&x.session.StartDate>DateTime.Now)).Any();
+            var Sessions = (await unitOfWork.GetRepository<MemberSession>().GetAllAsync(x => x.MemberId == id)).Select(x => x.SessionId);
 
+            var HasActiveSessions= (await unitOfWork.GetRepository<Session>().GetAllAsync(x => Sessions.Contains(x.Id) && x.StartDate > DateTime.Now)).Any();
             if (HasActiveSessions) return false;
 
             var memberships = await unitOfWork.GetRepository<MemberShip>().GetAllAsync(x => x.MemberId == id);
