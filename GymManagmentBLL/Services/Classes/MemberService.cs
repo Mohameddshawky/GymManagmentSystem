@@ -119,7 +119,10 @@ namespace GymManagmentBLL.Services.Classes
             try
             {
                
-                if (CheckIfUnique(model.Email,model.PhoneNumber)) return false;
+                var emailExist=await unitOfWork.GetRepository<Member>().GetAllAsync(x=>x.Email==model.Email && x.Id != id);
+                var phoneExsit=await unitOfWork.GetRepository<Member>().GetAllAsync(x=>x.PhoneNumber==model.PhoneNumber && x.Id != id);
+                if(emailExist.Any() || phoneExsit.Any()) return false;
+
                 var member = await unitOfWork.GetRepository<Member>().GetAsync(id);
                 member.Email = model.Email;
                 member.PhoneNumber = model.PhoneNumber;

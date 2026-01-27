@@ -82,7 +82,7 @@ namespace GymManagmentPL.Controllers
                 return RedirectToAction(nameof(Index));
 
             }
-            var MemberDetails = await memberService.GetMemberDetailsAsync(id);
+            var MemberDetails = await memberService.GetMemberToUbdateAsync(id);
             if (MemberDetails == null)
             {
                 TempData["ErrorMessage"] = "Member not found.";
@@ -91,6 +91,24 @@ namespace GymManagmentPL.Controllers
 
             return View(MemberDetails);
 
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditMember([FromRoute]int id,UpdateMemberViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                bool res = await memberService.UpdateMemberAsync(id,model);
+                if (res)
+                    TempData["SuccessMessage"] = "Member updated successfully.";
+                else
+                    TempData["ErrorMessage"] = "Failed to update Member.";
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ModelState.AddModelError("DataInvalid", "Please correct the errors and try again.");
+                return View(nameof(Edit), model);
+            }
         }
     }
 }
