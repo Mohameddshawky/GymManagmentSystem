@@ -16,13 +16,16 @@ namespace GymManagmentBLL.Mapping
                 , des => des.MapFrom(src => src.Specialties.ToString()))
                 .ReverseMap();
 
-            CreateMap<CreateTrainerViewModel, Trainer>()
-                .ForMember(x => x.Address.BuildingNumber,
-                des => des.MapFrom(src => src.BuildingNumber))
-                .ForMember(x => x.Address.Street,
-                des => des.MapFrom(src => src.Street))
-                .ForMember(x => x.Address.City,
-                des => des.MapFrom(src => src.City));
+           CreateMap<CreateTrainerViewModel, Trainer>()
+                .ForMember(x=>x.Specialties
+                ,src=>src.MapFrom(des=>des.Specialization))
+    .ForPath(x => x.Address.BuildingNumber,
+        opt => opt.MapFrom(src => src.BuildingNumber))
+    .ForPath(x => x.Address.Street,
+        opt => opt.MapFrom(src => src.Street))
+    .ForPath(x => x.Address.City,
+        opt => opt.MapFrom(src => src.City));
+
 
             CreateMap<UpdateTrainerViewModel, Trainer>()
                 .ForMember(x => x.Address.BuildingNumber,

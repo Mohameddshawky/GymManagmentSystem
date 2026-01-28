@@ -13,9 +13,9 @@ namespace GymManagmentBLL.Mapping
         public MemberProfile()
         {
             CreateMap<Member, MemberViewModel>()
-                .ForMember(x=>x.Gender,
-                des=>des.MapFrom(src=>src.Gender.ToString()))
-                .ForMember(x=>x.Phone,des=>des.MapFrom(src=>src.PhoneNumber))
+                .ForMember(x => x.Gender,
+                des => des.MapFrom(src => src.Gender.ToString()))
+                .ForMember(x => x.Phone, des => des.MapFrom(src => src.PhoneNumber))
                 .ReverseMap();
 
             CreateMap<CreateMemberViewModel, Member>()
@@ -27,11 +27,11 @@ namespace GymManagmentBLL.Mapping
          opt => opt.MapFrom(src => src.Street))
      .ForPath(dest => dest.Address.City,
          opt => opt.MapFrom(src => src.City));
-  
 
 
 
-            CreateMap<Member,UpdateMemberViewModel>()
+
+            CreateMap<Member, UpdateMemberViewModel>()
                 .ForMember(x => x.BuildingNumber,
                 des => des.MapFrom(src => src.Address.BuildingNumber))
                 .ForMember(x => x.Street,

@@ -19,6 +19,7 @@ builder.Services.AddDbContext<GymDbcontext>(
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddScoped<IMemberService, MemberService>();
+builder.Services.AddScoped<ITrainerService, TrainerService>();
 builder.Services.AddScoped<ISessionREpository,SessionRepository>(); 
 builder.Services.AddAutoMapper(m => m.AddProfile(new MemberProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new HealthRecordProfile()));
