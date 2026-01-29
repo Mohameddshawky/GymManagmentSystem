@@ -61,5 +61,43 @@ namespace GymManagmentPL.Controllers
                 return View(nameof(Create), model);
             }
         }
+
+
+        public async Task<IActionResult> EditTrainer(int id)
+        {
+            if (id < 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Trainer Id.";
+                return RedirectToAction(nameof(Index));
+
+            }
+            var TrainerDetails = await trainerService.GetTrainerToUbdateAsync(id);
+            if (TrainerDetails == null)
+            {
+                TempData["ErrorMessage"] = "Trainer not found.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(TrainerDetails);
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditTrainer([FromRoute] int id, UpdateTrainerViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                bool res = await trainerService.UpdateTrainerAsync(id, model);
+                if (res)
+                    TempData["SuccessMessage"] = "Trainer updated successfully.";
+                else
+                    TempData["ErrorMessage"] = "Failed to update Trainer.";
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ModelState.AddModelError("DataInvalid", "Please correct the errors and try again.");
+                return View(nameof(EditTrainer), model);
+            }
+        }
     }
 }

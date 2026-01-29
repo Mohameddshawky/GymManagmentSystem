@@ -29,15 +29,17 @@ namespace GymManagmentBLL.Mapping
 
             CreateMap<UpdateTrainerViewModel, Trainer>()
                 .ForPath(dest => dest.Address.BuildingNumber,
-         opt => opt.MapFrom(src => src.BuildingNumber))
-     .ForPath(dest => dest.Address.Street,
-         opt => opt.MapFrom(src => src.Street))
-     .ForPath(dest => dest.Address.City,
-         opt => opt.MapFrom(src => src.City));
+                    opt => opt.MapFrom(src => src.BuildingNumber))
+                .ForPath(dest => dest.Address.Street,
+                    opt => opt.MapFrom(src => src.Street))
+                .ForPath(dest => dest.Address.City,
+                    opt => opt.MapFrom(src => src.City))
+                .ForMember(x => x.Specialties,
+                    opt => opt.MapFrom(src => src.Specialization)).ReverseMap();
 
 
 
-            CreateMap<UpdateTrainerViewModel, Trainer>();
+       
 
 
             CreateMap<Trainer, TrainerDetailsViewModel>()
