@@ -25,6 +25,7 @@ builder.Services.AddAutoMapper(m => m.AddProfile(new MemberProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new HealthRecordProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new PlanProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new SessionProfile()));
+builder.Services.AddAutoMapper(m => m.AddProfile(new TrainerProfile()));
 
 var app = builder.Build();
 
