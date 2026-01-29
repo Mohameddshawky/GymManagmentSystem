@@ -8,7 +8,7 @@ namespace GymManagmentBLL.ViewModels.MemberViewModels
     public class UpdateMemberViewModel
     {
         public string Name { get; set; } = string.Empty;
-        public string  Photo { get; set; } = string.Empty;
+        public string?  Photo { get; set; } = string.Empty;
 
         [DataType(DataType.EmailAddress)]//ui hint 
         [Required(ErrorMessage = "Email is Required")]
@@ -19,7 +19,7 @@ namespace GymManagmentBLL.ViewModels.MemberViewModels
         [DataType(DataType.PhoneNumber)]//ui hint 
         [Required(ErrorMessage = "PhoneNumber is Required")]
         [Phone(ErrorMessage = "Invalid Phone Number")]//validation
-        [StringLength(12, MinimumLength = 12, ErrorMessage = "PhoneNumber Must be Between 2 and 50 charachters")]
+        [StringLength(11, MinimumLength = 11, ErrorMessage = "PhoneNumber Must be 11 number")]
         [RegularExpression(@"^(010|011|012|015)\d{8}$", ErrorMessage = "Phone number must be valid Egypyain phone number")]
         public string PhoneNumber { get; set; } = string.Empty;
 

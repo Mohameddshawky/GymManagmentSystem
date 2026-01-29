@@ -13,21 +13,25 @@ namespace GymManagmentBLL.Mapping
         public MemberProfile()
         {
             CreateMap<Member, MemberViewModel>()
-                .ForMember(x=>x.Gender,
-                des=>des.MapFrom(src=>src.Gender.ToString()))
+                .ForMember(x => x.Gender,
+                des => des.MapFrom(src => src.Gender.ToString()))
+                .ForMember(x => x.Phone, des => des.MapFrom(src => src.PhoneNumber))
                 .ReverseMap();
 
             CreateMap<CreateMemberViewModel, Member>()
-                .ForMember(x => x.healthRecord,
-                des => des.MapFrom(src => src.healthRecordViewModel))
-                .ForMember(x=>x.Address.BuildingNumber,
-                des=>des.MapFrom(src=>src.BuildingNumber))
-                .ForMember(x=>x.Address.Street,
-                des=>des.MapFrom(src=>src.Street))
-                .ForMember(x=>x.Address.City,
-                des=>des.MapFrom(src=>src.City));
+     .ForMember(dest => dest.healthRecord,
+         opt => opt.MapFrom(src => src.healthRecordViewModel))
+     .ForPath(dest => dest.Address.BuildingNumber,
+         opt => opt.MapFrom(src => src.BuildingNumber))
+     .ForPath(dest => dest.Address.Street,
+         opt => opt.MapFrom(src => src.Street))
+     .ForPath(dest => dest.Address.City,
+         opt => opt.MapFrom(src => src.City));
 
-            CreateMap<Member,UpdateMemberViewModel>()
+
+
+
+            CreateMap<Member, UpdateMemberViewModel>()
                 .ForMember(x => x.BuildingNumber,
                 des => des.MapFrom(src => src.Address.BuildingNumber))
                 .ForMember(x => x.Street,

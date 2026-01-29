@@ -38,8 +38,9 @@ namespace GymManagmentBLL.Services.Classes
         {
             var member =await unitOfWork.GetRepository<Member>().GetAsync(id);
             if(member == null) return false;
-            var HasActiveSessions=(await unitOfWork.GetRepository<MemberSession>().GetAllAsync(x=>x.MemberId==id&&x.session.StartDate>DateTime.Now)).Any();
+            var Sessions = (await unitOfWork.GetRepository<MemberSession>().GetAllAsync(x => x.MemberId == id)).Select(x => x.SessionId);
 
+            var HasActiveSessions= (await unitOfWork.GetRepository<Session>().GetAllAsync(x => Sessions.Contains(x.Id) && x.StartDate > DateTime.Now)).Any();
             if (HasActiveSessions) return false;
 
             var memberships = await unitOfWork.GetRepository<MemberShip>().GetAllAsync(x => x.MemberId == id);
@@ -86,7 +87,7 @@ namespace GymManagmentBLL.Services.Classes
                 DateOfBirth = member.DateOfBirth.ToString("yyyy-MM-dd"),
                 Address = $" {member.Address.BuildingNumber} , {member.Address.Street} , {member.Address.City}",
             };
-            var Activemembership = (await unitOfWork.GetRepository<MemberShip>().GetAllAsync(x => x.MemberId == member.Id&&x.Statue=="Active")).FirstOrDefault();
+            var Activemembership = (await unitOfWork.GetRepository<MemberShip>().GetAllAsync(x => x.MemberId == member.Id)).FirstOrDefault(x=>x.Statue == "Active");
             if(Activemembership != null)
             {               
                 result.MemberShipStartDate = Activemembership.CreatedAt.ToString("yyyy-MM-dd");
@@ -119,7 +120,10 @@ namespace GymManagmentBLL.Services.Classes
             try
             {
                
-                if (CheckIfUnique(model.Email,model.PhoneNumber)) return false;
+                var emailExist=await unitOfWork.GetRepository<Member>().GetAllAsync(x=>x.Email==model.Email && x.Id != id);
+                var phoneExsit=await unitOfWork.GetRepository<Member>().GetAllAsync(x=>x.PhoneNumber==model.PhoneNumber && x.Id != id);
+                if(emailExist.Any() || phoneExsit.Any()) return false;
+
                 var member = await unitOfWork.GetRepository<Member>().GetAsync(id);
                 member.Email = model.Email;
                 member.PhoneNumber = model.PhoneNumber;

@@ -4,6 +4,8 @@ using GymManagmentDAL.Repositories;
 using GymManagmentBLL.Mapping;
 using Microsoft.EntityFrameworkCore;
 using GymManagmentDAL.Data.DataSeed;
+using GymManagmentBLL.Services.Interfaces;
+using GymManagmentBLL.Services.Classes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,11 +17,15 @@ builder.Services.AddDbContext<GymDbcontext>(
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     });
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+builder.Services.AddScoped<IMemberService, MemberService>();
+builder.Services.AddScoped<ITrainerService, TrainerService>();
 builder.Services.AddScoped<ISessionREpository,SessionRepository>(); 
 builder.Services.AddAutoMapper(m => m.AddProfile(new MemberProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new HealthRecordProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new PlanProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new SessionProfile()));
+builder.Services.AddAutoMapper(m => m.AddProfile(new TrainerProfile()));
 
 var app = builder.Build();
 
@@ -53,8 +59,13 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Home}/{action=Index}/{id:int?}")
     .WithStaticAssets();
+//app.MapControllerRoute(
+//    name: "trainers",     name use in redirect to route 
+//    pattern: "Coach/{action}",
+//    defaults: new { controller = "Trainer" }) ;                  
+   
 
 
 app.Run();
