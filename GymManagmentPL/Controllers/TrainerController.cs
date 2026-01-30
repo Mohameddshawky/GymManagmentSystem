@@ -117,7 +117,7 @@ namespace GymManagmentPL.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> DeleteConfirm([FromForm] int id)
+        public async Task<IActionResult> DeleteConfirmed([FromForm] int id)
         {
             var res = await trainerService.DeleteTrainerAsync(id);
             if (res)
