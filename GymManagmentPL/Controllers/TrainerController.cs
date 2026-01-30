@@ -99,5 +99,33 @@ namespace GymManagmentPL.Controllers
                 return View(nameof(EditTrainer), model);
             }
         }
+        public async Task<IActionResult> DeleteTrainer(int id)
+        {
+            if (id < 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Member Id.";
+                return RedirectToAction(nameof(Index));
+            }
+            var res = await trainerService.GetTrainerToUbdateAsync(id);
+            if (res is null)
+            {
+                TempData["ErrorMessage"] = " Trainer Not Found.";
+                return RedirectToAction(nameof(Index));
+
+            }
+            ViewBag.TrainerId = id;
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirm([FromForm] int id)
+        {
+            var res = await trainerService.DeleteTrainerAsync(id);
+            if (res)
+                TempData["SuccessMessage"] = "Trainer deleted successfully.";
+            else
+                TempData["ErrorMessage"] = "Failed to delete Trainer.";
+            return RedirectToAction(nameof(Index));
+
+        }
     }
 }
