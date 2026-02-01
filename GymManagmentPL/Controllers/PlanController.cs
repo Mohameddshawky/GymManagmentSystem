@@ -72,5 +72,22 @@ namespace GymManagmentPL.Controllers
 
 
         }
+        [HttpPost]
+        public async Task<IActionResult> Toggle([FromRoute] int id)
+        {
+            if (id < 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Plan Id.";
+                return RedirectToAction(nameof(Index));
+            }
+            var isToggled = await planService.TogglePlanAsync(id);
+            if (!isToggled)
+            {
+                TempData["ErrorMessage"] = "Plan Can Not Be Toggled.";
+                return RedirectToAction(nameof(Index));
+            }
+            TempData["SuccessMessage"] = "Plan Toggled Successfully.";
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
