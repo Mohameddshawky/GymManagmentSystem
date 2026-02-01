@@ -85,8 +85,9 @@ namespace GymManagmentBLL.Services.Classes
         private async Task<bool> HasMembershipAsync(int id)
         {
             var membership=await unitOfWork.GetRepository<MemberShip>()
-                .GetAllAsync(p => p.Id == id&&p.Statue=="Active");
-            return membership.Any();
+                .GetAllAsync(p => p.PlanId == id);
+            var active=membership.Where(m=>m.Statue=="Active");
+            return active.Any();
         }
 
     }

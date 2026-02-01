@@ -12,7 +12,7 @@ namespace GymManagmentBLL.ViewModels.PlanViewModels
         public string Name { get; set; } = string.Empty;
 
         [Required(ErrorMessage = " Description is Required")]
-        [StringLength(50,MinimumLength =5, ErrorMessage = "Description must be Between 5 and 200 charachters")]
+        [StringLength(200,MinimumLength =5, ErrorMessage = "Description must be Between 5 and 200 charachters")]
         public string Description { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Price Name is Required")]
