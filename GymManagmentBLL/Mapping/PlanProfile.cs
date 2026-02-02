@@ -12,6 +12,7 @@ namespace GymManagmentBLL.Mapping
         public PlanProfile()
         {
             CreateMap<Plan,PlanViewModel>().ReverseMap();
+            CreateMap<Plan, UpdatePlanViewModel>().ReverseMap();
 
         }
     }

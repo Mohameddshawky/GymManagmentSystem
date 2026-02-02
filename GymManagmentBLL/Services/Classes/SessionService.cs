@@ -66,14 +66,14 @@ namespace GymManagmentBLL.Services.Classes
         public async Task<UpdateSessionViewModel?> GetToUpdateSessionAsync(int id)
         {
             var session=await unitOfWork.sessionRepository.GetAsync(id);
-            if (await IsAvailableToUpdate(session! )) return null!;
+            if (await IsAvailableToUpdate(session! )==false) return null!;
             var res=mapper.Map<UpdateSessionViewModel>(session);        
             return res;
         }
 
         public async Task<bool> UpdateSessionAsync(int id, UpdateSessionViewModel model)
         {
-            if (await IsTrainerNotExistAsync(model.TrainerId)==false) return false;
+            if (await IsTrainerNotExistAsync(model.TrainerId)) return false;
             if(model.StartDate>model.EndDate) return false;
             try
             {
@@ -107,7 +107,7 @@ namespace GymManagmentBLL.Services.Classes
         }
         private async Task<bool> IsCategoryNotExistAsync(int CategotyId)
         {
-            var category = await unitOfWork.GetRepository<Trainer>().GetAsync(CategotyId);
+            var category = await unitOfWork.GetRepository<Category>().GetAsync(CategotyId);
             return category is null; 
         }
         private async Task<bool> IsAvailableToRemove(Session? session)
@@ -133,5 +133,18 @@ namespace GymManagmentBLL.Services.Classes
 
         }
 
+        public async Task<IEnumerable<TrainerSelectViewModel>> GetTrainersFroDropDown()
+        {
+            var Trainer=await unitOfWork.GetRepository<Trainer>().GetAllAsync();
+            var result=mapper.Map<IEnumerable<TrainerSelectViewModel>>(Trainer);
+            return result;
+        }
+
+        public async Task<IEnumerable<CategorySelectViewModel>> GetCategoryFroDropDown()
+        {
+            var categories = await unitOfWork.GetRepository<Category>().GetAllAsync();
+            var result = mapper.Map<IEnumerable<CategorySelectViewModel>>(categories);
+            return result;
+        }
     }
 }

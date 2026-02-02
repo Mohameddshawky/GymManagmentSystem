@@ -79,7 +79,9 @@ namespace GymManagmentBLL.Services.Classes
             if(trainer is null) return false;
             try
             {
-                if (await CheckIfUnique(model.Email, model.PhoneNumber)) return false;
+                var emailExist = await unitOfWork.GetRepository<Trainer>().GetAllAsync(x => x.Email == model.Email && x.Id != id);
+                var phoneExsit = await unitOfWork.GetRepository<Trainer>().GetAllAsync(x => x.PhoneNumber == model.PhoneNumber && x.Id != id);
+                if (emailExist.Any() || phoneExsit.Any()) return false;
 
                 trainer.Name = model.Name;
                 trainer.Email = model.Email;

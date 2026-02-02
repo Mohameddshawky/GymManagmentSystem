@@ -26,7 +26,7 @@ namespace GymManagmentDAL.Repositories
 
         public async Task<int> GetCountOfBookedSlotsAsync(int id)
         {
-            return await dbcontext.memberSessions.CountAsync(x => x.Id == id);
+            return await dbcontext.memberSessions.CountAsync(x => x.SessionId == id);
         }
 
         public async Task<IEnumerable<Session>> GetSessionsWithTrainerAndCategoryAsync()
