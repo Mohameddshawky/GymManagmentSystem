@@ -1,4 +1,5 @@
-﻿using GymManagmentBLL.Services.Interfaces;
+﻿using GymManagmentBLL.Services.Classes;
+using GymManagmentBLL.Services.Interfaces;
 using GymManagmentBLL.ViewModels.SessionViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -103,6 +104,36 @@ namespace GymManagmentPL.Controllers
                 return View(updateSession);
             }
         }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id < 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Member Id.";
+                return RedirectToAction(nameof(Index));
+            }
+            var res = await sessionService.GetToUpdateSessionAsync(id);
+            if (res is null)
+            {
+                TempData["ErrorMessage"] = " Session Not Found.";
+                return RedirectToAction(nameof(Index));
+
+            }
+            ViewBag.SessionId = id;
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirmed([FromForm] int id)
+        {
+            var res = await sessionService.DeleteSessionAsync(id);
+            if (res)
+                TempData["SuccessMessage"] = "Session deleted successfully.";
+            else
+                TempData["ErrorMessage"] = " Session Can Not Be Deleted.";
+            return RedirectToAction(nameof(Index));
+
+        }
+
         private async Task Helper1()
         {
             var Categories = await sessionService.GetCategoryFroDropDown();
