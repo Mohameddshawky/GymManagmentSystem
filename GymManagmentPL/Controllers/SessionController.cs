@@ -112,7 +112,7 @@ namespace GymManagmentPL.Controllers
                 TempData["ErrorMessage"] = "Invalid Member Id.";
                 return RedirectToAction(nameof(Index));
             }
-            var res = await sessionService.GetToUpdateSessionAsync(id);
+            var res = await sessionService.GetSessionDetailsAsync(id);
             if (res is null)
             {
                 TempData["ErrorMessage"] = " Session Not Found.";
@@ -123,7 +123,7 @@ namespace GymManagmentPL.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> DeleteConfirmed([FromForm] int id)
+        public async Task<IActionResult> DeleteConfirmed([FromRoute] int id)
         {
             var res = await sessionService.DeleteSessionAsync(id);
             if (res)
