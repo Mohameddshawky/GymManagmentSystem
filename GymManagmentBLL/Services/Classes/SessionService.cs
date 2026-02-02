@@ -133,5 +133,18 @@ namespace GymManagmentBLL.Services.Classes
 
         }
 
+        public async Task<IEnumerable<TrainerSelectViewModel>> GetTrainersFroDropDown()
+        {
+            var Trainer=await unitOfWork.GetRepository<Trainer>().GetAllAsync();
+            var result=mapper.Map<IEnumerable<TrainerSelectViewModel>>(Trainer);
+            return result;
+        }
+
+        public async Task<IEnumerable<CategorySelectViewModel>> GetCategoryFroDropDown()
+        {
+            var categories = await unitOfWork.GetRepository<Category>().GetAllAsync();
+            var result = mapper.Map<IEnumerable<CategorySelectViewModel>>(categories);
+            return result;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GymManagmentBLL.ViewModels.SessionViewModel;
 using GymManagmentBLL.ViewModels.TrainerViewModels;
 using GymManagmentDAL.Entites;
 using System;
@@ -49,6 +50,8 @@ namespace GymManagmentBLL.Mapping
                 .ForMember(x => x.Address,
                 des => des.MapFrom(src => $"{src.Address.City} {src.Address.Street} {src.Address.BuildingNumber}"))
                 .ReverseMap();
+            CreateMap<Trainer, TrainerSelectViewModel>().ReverseMap()
+                ;
         }
 
     }

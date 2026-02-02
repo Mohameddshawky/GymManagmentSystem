@@ -1,5 +1,7 @@
 ﻿using GymManagmentBLL.Services.Interfaces;
+using GymManagmentBLL.ViewModels.SessionViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
 
 namespace GymManagmentPL.Controllers
@@ -31,6 +33,41 @@ namespace GymManagmentPL.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(sessionDetails);
+        }
+        
+        public async Task<IActionResult> Create()
+        {
+           await Helper();
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateSessionViewModel createSession)
+        {
+            if (!ModelState.IsValid)
+            {
+                await Helper();
+                return View(createSession);
+            }
+            var isCreated =await sessionService.CreateSessionAsync(createSession);
+            if (isCreated)
+            {
+                TempData["SuccessMessage"] = "Session created successfully.";
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                await Helper();
+                TempData["ErrorMessage"] = "Failed to create session.";
+                return View(createSession);
+
+            }
+        }
+        private async Task Helper()
+        {
+            var Categories = await sessionService.GetCategoryFroDropDown();
+            ViewBag.Categories = new SelectList(Categories, "Id", "Name");
+            var Trainers = await sessionService.GetTrainersFroDropDown();
+            ViewBag.Trainers = new SelectList(Trainers, "Id", "Name");
         }
     }
 }

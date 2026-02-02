@@ -14,6 +14,7 @@ namespace GymManagmentBLL.Services.Interfaces
         Task<UpdateSessionViewModel?> GetToUpdateSessionAsync(int id);
         Task<bool> UpdateSessionAsync(int id, UpdateSessionViewModel model);
         Task<bool> DeleteSessionAsync(int id);
-
+        Task<IEnumerable<TrainerSelectViewModel>> GetTrainersFroDropDown();
+        Task<IEnumerable<CategorySelectViewModel>> GetCategoryFroDropDown();
     }
 }
