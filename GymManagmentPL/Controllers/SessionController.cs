@@ -37,7 +37,8 @@ namespace GymManagmentPL.Controllers
         
         public async Task<IActionResult> Create()
         {
-           await Helper();
+           await Helper1();
+            await Helper2();
             return View();
         }
         [HttpPost]
@@ -45,7 +46,8 @@ namespace GymManagmentPL.Controllers
         {
             if (!ModelState.IsValid)
             {
-                await Helper();
+                await Helper1();
+                await Helper2();
                 return View(createSession);
             }
             var isCreated =await sessionService.CreateSessionAsync(createSession);
@@ -56,16 +58,59 @@ namespace GymManagmentPL.Controllers
             }
             else
             {
-                await Helper();
+                await Helper1();
+                await Helper2();
                 TempData["ErrorMessage"] = "Failed to create session.";
                 return View(createSession);
 
             }
         }
-        private async Task Helper()
+        public async Task<IActionResult> Edit(int id)
+        {
+
+            if (id < 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Session Id.";
+                return RedirectToAction(nameof(Index));
+            }
+            var session=await sessionService.GetToUpdateSessionAsync(id);
+            if (session == null)
+            {
+                TempData["ErrorMessage"] = "Session Can Not Be Updated.";
+                return RedirectToAction(nameof(Index));
+            }
+            await Helper2();
+            return View(session);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromRoute] int id, UpdateSessionViewModel updateSession)
+        {
+            if (!ModelState.IsValid)
+            {
+                await Helper2();
+                return View(updateSession);
+            }
+            var isUpdated = await sessionService.UpdateSessionAsync(id, updateSession);
+            if (isUpdated)
+            {
+                TempData["SuccessMessage"] = "Session updated successfully.";
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                await Helper2();
+                TempData["ErrorMessage"] = "Failed to update session.";
+                return View(updateSession);
+            }
+        }
+        private async Task Helper1()
         {
             var Categories = await sessionService.GetCategoryFroDropDown();
             ViewBag.Categories = new SelectList(Categories, "Id", "Name");
+          
+        }
+        private async Task Helper2()
+        {
             var Trainers = await sessionService.GetTrainersFroDropDown();
             ViewBag.Trainers = new SelectList(Trainers, "Id", "Name");
         }

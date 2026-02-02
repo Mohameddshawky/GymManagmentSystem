@@ -66,14 +66,14 @@ namespace GymManagmentBLL.Services.Classes
         public async Task<UpdateSessionViewModel?> GetToUpdateSessionAsync(int id)
         {
             var session=await unitOfWork.sessionRepository.GetAsync(id);
-            if (await IsAvailableToUpdate(session! )) return null!;
+            if (await IsAvailableToUpdate(session! )==false) return null!;
             var res=mapper.Map<UpdateSessionViewModel>(session);        
             return res;
         }
 
         public async Task<bool> UpdateSessionAsync(int id, UpdateSessionViewModel model)
         {
-            if (await IsTrainerNotExistAsync(model.TrainerId)==false) return false;
+            if (await IsTrainerNotExistAsync(model.TrainerId)) return false;
             if(model.StartDate>model.EndDate) return false;
             try
             {
