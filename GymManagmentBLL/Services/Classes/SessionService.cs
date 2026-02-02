@@ -107,7 +107,7 @@ namespace GymManagmentBLL.Services.Classes
         }
         private async Task<bool> IsCategoryNotExistAsync(int CategotyId)
         {
-            var category = await unitOfWork.GetRepository<Trainer>().GetAsync(CategotyId);
+            var category = await unitOfWork.GetRepository<Category>().GetAsync(CategotyId);
             return category is null; 
         }
         private async Task<bool> IsAvailableToRemove(Session? session)
