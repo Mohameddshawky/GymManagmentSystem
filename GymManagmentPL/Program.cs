@@ -7,6 +7,8 @@ using GymManagmentDAL.Data.DataSeed;
 using GymManagmentBLL.Services.Interfaces;
 using GymManagmentBLL.Services.Classes;
 using GymManagmentBLL.Services.AttachementService;
+using Microsoft.AspNetCore.Identity;
+using GymManagmentDAL.Entites;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,12 +32,26 @@ builder.Services.AddAutoMapper(m => m.AddProfile(new HealthRecordProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new PlanProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new SessionProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new TrainerProfile()));
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>
+    (
+     options =>{
 
+        options.User.RequireUniqueEmail = true;
+
+    }).AddEntityFrameworkStores<GymDbcontext>();
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+   
+});
 var app = builder.Build();
 
 // Seed Data
  using (var scope = app.Services.CreateScope())
 {
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<GymDbcontext>();
     var pendingMigrations = context.Database.GetPendingMigrations();
@@ -44,6 +60,7 @@ var app = builder.Build();
         context.Database.Migrate();
     }
     GymDbContextSeeding.SeedData(context);
+    await IdentitySeeding.SeedDataAsync(roleManager, userManager);
 }
 
 // Configure the HTTP request pipeline.
