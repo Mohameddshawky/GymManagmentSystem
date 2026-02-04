@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using GymManagmentDAL.Data.DataSeed;
 using GymManagmentBLL.Services.Interfaces;
 using GymManagmentBLL.Services.Classes;
+using GymManagmentBLL.Services.AttachementService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddScoped<IMemberService, MemberService>();
 builder.Services.AddScoped<ITrainerService, TrainerService>();
 builder.Services.AddScoped<IPlanService, PlanService>();
+builder.Services.AddScoped<IAttachmentService, AttachmentService>();
 builder.Services.AddScoped<ISessionService, SessionService>();
 builder.Services.AddScoped<ISessionREpository,SessionRepository>(); 
 builder.Services.AddAutoMapper(m => m.AddProfile(new MemberProfile()));
