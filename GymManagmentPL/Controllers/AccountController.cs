@@ -11,7 +11,7 @@ namespace GymManagmentPL.Controllers
         private readonly IAccountService accountService;
         private readonly SignInManager<ApplicationUser> signInManager;
 
-        public AccountController(IAccountService accountService,SignInManager<ApplicationUser> signInManager)
+        public AccountController(IAccountService accountService, SignInManager<ApplicationUser> signInManager)
         {
             this.accountService = accountService;
             this.signInManager = signInManager;
@@ -36,12 +36,22 @@ namespace GymManagmentPL.Controllers
                 return View(model);
             }
             // Sign in the user
-             var res= await signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: false);
+            var res = await signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: false);
             if (res.IsNotAllowed) ModelState.AddModelError("Invalid Login", "Your Account Is Not Allowed");
-            if(res.Succeeded) return RedirectToAction("Index", "Home");
+            if (res.Succeeded) return RedirectToAction("Index", "Home");
 
-            return View(model);                                         
+            return View(model);
         }
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Login", "Account");
 
+        }
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }
