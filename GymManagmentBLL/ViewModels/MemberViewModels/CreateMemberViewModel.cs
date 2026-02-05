@@ -1,4 +1,5 @@
 ﻿using GymManagmentDAL.Entites.Enums;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -48,5 +49,8 @@ namespace GymManagmentBLL.ViewModels.MemberViewModels
         public string City { get; set; } = string.Empty;
         [Required(ErrorMessage ="Health Record is Requird")]
         public HealthRecordViewModel healthRecordViewModel { get; set; } = null!;
+        [Required(ErrorMessage = "Photo is Required")]
+        [Display(Name ="Member Photo")]
+        public IFormFile PhotoFile { get; set; } = null!;
     }
 }

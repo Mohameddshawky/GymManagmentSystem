@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using GymManagmentDAL.Data.DataSeed;
 using GymManagmentBLL.Services.Interfaces;
 using GymManagmentBLL.Services.Classes;
+using GymManagmentBLL.Services.AttachementService;
+using Microsoft.AspNetCore.Identity;
+using GymManagmentDAL.Entites;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,19 +24,35 @@ builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddScoped<IMemberService, MemberService>();
 builder.Services.AddScoped<ITrainerService, TrainerService>();
 builder.Services.AddScoped<IPlanService, PlanService>();
+builder.Services.AddScoped<IAttachmentService, AttachmentService>();
 builder.Services.AddScoped<ISessionService, SessionService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ISessionREpository,SessionRepository>(); 
 builder.Services.AddAutoMapper(m => m.AddProfile(new MemberProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new HealthRecordProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new PlanProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new SessionProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new TrainerProfile()));
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>
+    (
+     options =>{
 
+        options.User.RequireUniqueEmail = true;
+
+    }).AddEntityFrameworkStores<GymDbcontext>();
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+   
+});
 var app = builder.Build();
 
 // Seed Data
  using (var scope = app.Services.CreateScope())
 {
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<GymDbcontext>();
     var pendingMigrations = context.Database.GetPendingMigrations();
@@ -42,6 +61,7 @@ var app = builder.Build();
         context.Database.Migrate();
     }
     GymDbContextSeeding.SeedData(context);
+    await IdentitySeeding.SeedDataAsync(roleManager, userManager);
 }
 
 // Configure the HTTP request pipeline.
@@ -54,14 +74,14 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
+app.UseAuthentication();    
 app.UseAuthorization();
 
 app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id:int?}")
+    pattern: "{controller=Account}/{action=Login}/{id:int?}")
     .WithStaticAssets();
 //app.MapControllerRoute(
 //    name: "trainers",     name use in redirect to route 

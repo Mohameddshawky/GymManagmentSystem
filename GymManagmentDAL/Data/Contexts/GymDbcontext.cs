@@ -1,4 +1,6 @@
 ﻿using GymManagmentDAL.Entites;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,23 +10,30 @@ using System.Text;
 
 namespace GymManagmentDAL.Data.Contexts
 {
-    public class GymDbcontext : DbContext
+    public class GymDbcontext : IdentityDbContext<ApplicationUser>
     {
         public GymDbcontext(DbContextOptions<GymDbcontext> options):base(options)
         {
 
         }
-       
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-
-        //    optionsBuilder.UseSqlServer("Server=SHAWKY\\MSQLSERVER;Database=GymManagmentDB;Trusted_Connection=True;TrustServerCertificate=True;");
-        //}
+      
         override protected void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder); 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly()); modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        }
+            modelBuilder.Entity<ApplicationUser>
+                (x =>
+                {
+                    x.Property(a => a.FirstName)
+                    .HasColumnType("varchar")
+                    .HasMaxLength(50);
+                    x.Property(a => a.LastName)
+                    .HasColumnType("varchar")
+                    .HasMaxLength(50);
 
+                });
+        }
+      
         public DbSet<Member> Members { get; set; }
         public DbSet<HealthRecord> healthRecords { get; set; }
         public DbSet<Trainer> trainers { get; set; }

@@ -7,7 +7,7 @@ namespace GymManagmentDAL.Entites
 {
     public class Member:GymUser
     {
-        public string? Photo { get; set; }=string.Empty;
+        public string Photo { get; set; }=string.Empty;
 
         public HealthRecord healthRecord { get; set; }=null!;
 

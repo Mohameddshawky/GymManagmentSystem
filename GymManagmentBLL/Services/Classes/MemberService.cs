@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GymManagmentBLL.Services.AttachementService;
 using GymManagmentBLL.Services.Interfaces;
 using GymManagmentBLL.ViewModels.MemberViewModels;
 using GymManagmentDAL.Entites;
@@ -13,7 +14,8 @@ namespace GymManagmentBLL.Services.Classes
     public class MemberService(
         
         IMapper mapper,
-        IUnitOfWork unitOfWork
+        IUnitOfWork unitOfWork,
+        IAttachmentService attachmentService
 
         ) : IMemberService
     {
@@ -22,14 +24,24 @@ namespace GymManagmentBLL.Services.Classes
             try
             {
                 if (CheckIfUnique(model.Email, model.PhoneNumber)) return false;
+
+                var photoName=  attachmentService.Upload("Member", model.PhotoFile);
+                if(string.IsNullOrEmpty(photoName)) return false;
                 var member = mapper.Map<Member>(model);
+                member.Photo = photoName;
                 await unitOfWork.GetRepository<Member>().AddAsync(member);
                 var result = await unitOfWork.SaveChangesAsync();
-                return result > 0;
+                var res= result > 0;
+                if (!(res))
+                {
+                    attachmentService.Delete(photoName,"Member");
+                    return false;
+                }
+                return true;
             }
             catch (Exception ex)
             {
-
+                            
                 return false;
             }
         }
@@ -55,8 +67,12 @@ namespace GymManagmentBLL.Services.Classes
                    
                 }
                 unitOfWork.GetRepository<Member>().Delete(member); 
-                return await unitOfWork.SaveChangesAsync()>0;
-
+                var res= await unitOfWork.SaveChangesAsync()>0;
+                if(res)
+                {
+                    attachmentService.Delete(member.Photo!, "Member");
+                }
+                return res;
             }
             catch (Exception ex)
             {
