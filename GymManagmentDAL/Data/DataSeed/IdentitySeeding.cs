@@ -57,8 +57,8 @@ namespace GymManagmentDAL.Data.DataSeed
 
 
                     };
-                    await userManager.CreateAsync(superAdminUser, "P@ssw0rd");
-                    await userManager.AddToRoleAsync(superAdminUser, "Admin");
+                    await userManager.CreateAsync(AdminUser, "P@ssw0rd");
+                    await userManager.AddToRoleAsync(AdminUser, "Admin");
                 }
                 return true;
             }
