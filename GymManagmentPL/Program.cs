@@ -33,6 +33,7 @@ builder.Services.AddAutoMapper(m => m.AddProfile(new HealthRecordProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new PlanProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new SessionProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new TrainerProfile()));
+builder.Services.AddAutoMapper(m => m.AddProfile(new MemberShipProfile()));
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>
     (
      options =>{

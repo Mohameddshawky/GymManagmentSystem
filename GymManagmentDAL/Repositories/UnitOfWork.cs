@@ -13,14 +13,19 @@ namespace GymManagmentDAL.Repositories
         private readonly GymDbcontext gymDbcontext;
         private ConcurrentDictionary<string, object> repositories;
 
-        public UnitOfWork(GymDbcontext gymDbcontext, ISessionREpository sessionRepository)
+        public UnitOfWork(GymDbcontext gymDbcontext
+            , ISessionREpository sessionRepository
+            ,IMemberShipRepository memberShipRepository)
         {
             repositories = new ConcurrentDictionary<string, object>();
             this.gymDbcontext = gymDbcontext;
             this.sessionRepository = sessionRepository;
+            this.MemberShipRepository = memberShipRepository;
         }
 
         public ISessionREpository sessionRepository {  get; }
+
+        public IMemberShipRepository MemberShipRepository { get; }
 
         public IGenericRepository<T> GetRepository<T>() where T : BaseEntity,new()
         {
