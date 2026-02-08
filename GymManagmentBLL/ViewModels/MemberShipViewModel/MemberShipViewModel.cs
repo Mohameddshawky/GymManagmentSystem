@@ -6,6 +6,7 @@ namespace GymManagmentBLL.ViewModels.MemberShipViewModel
 {
     public class MemberShipViewModel
     {
+        public int Id { get; set; }
         public string PlanName { get; set; } = null!;
         public string MemberName { get; set; } = null!;
         public DateTime StartDate { get; set; }
