@@ -9,7 +9,7 @@ namespace GymManagmentBLL.Services.Interfaces
     {
         Task<IEnumerable<MemberShipViewModel>> GetAllMemberShipAsync();
         Task<bool> CreateMemberShipAsync(CreateMemberShipViewModel model);
-        Task<bool> DeleteMemberShipAsync(int id);
+        Task<bool> DeleteMemberShipAsync(int memberId, int planId);
         Task<IEnumerable<MemberToDropDownViewModel>> GetMemberToDropDownsAsync();
         Task<IEnumerable<PlanToDropDownViewModel>> GetPlanToDropDownsAsync();   
 

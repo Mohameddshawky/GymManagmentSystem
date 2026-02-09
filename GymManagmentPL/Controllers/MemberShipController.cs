@@ -48,9 +48,9 @@ namespace GymManagmentPL.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> Cancel([FromRoute ]int id)
+        public async Task<IActionResult> Cancel(int memberId, int planId)
         {
-            var res = await memberShipService.DeleteMemberShipAsync(id);
+            var res = await memberShipService.DeleteMemberShipAsync(memberId, planId);
             if (res)
                 TempData["SuccessMessage"] = "Member deleted successfully.";
             else

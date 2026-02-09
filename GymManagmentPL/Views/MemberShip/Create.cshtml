@@ -1,9 +1,13 @@
 ﻿@model CreateMemberShipViewModel
-<div id="Alert" class="alert alert-danger alert-dismissible fade show">
-    <i class="bi bi-exclamation-triangle-fill me-2"></i>
-    Error Message
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
+@if (TempData["ErrorMessage"] != null)
+{
+    <div id="Alert" class="alert alert-danger alert-dismissible fade show">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
 
 <div class="container">
     <div class="row justify-content-center">
@@ -15,16 +19,16 @@
                 <div class="card-body">
                     <form asp-action="Create" method="post">
                         <div class="mb-3">
-                            <label class="form-label" asp-for="MemberId" >Member</label>
-							<select class="form-select" asp-items="@ViewBag.Members">
+                            <label class="form-label" >Member</label>
+							<select class="form-select" asp-for="MemberId" asp-items="@ViewBag.Members">
                                 <option value="">-- Select Member --</option>
                                 
                             </select>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" asp-for="PlanId" >Plan</label>
-							<select class="form-select" asp-items="@ViewBag.Plans">
+                            <label class="form-label">Plan</label>
+							<select class="form-select" asp-for="PlanId" asp-items="@ViewBag.Plans">
                                 <option value="">-- Select Plan --</option>
                             
                             </select>

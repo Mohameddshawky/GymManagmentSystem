@@ -36,7 +36,7 @@ namespace GymManagmentBLL.Services.Classes
             if(plan==null) return false;
 
             var days = plan.DurationDays;
-            memberShip.EndDate = memberShip.CreatedAt.AddDays(days);
+            memberShip.EndDate =DateTime.Now.AddDays(days);
             
                 await unitOfWork.MemberShipRepository.AddAsync(memberShip);
                 return await unitOfWork.SaveChangesAsync()>0;
@@ -48,12 +48,13 @@ namespace GymManagmentBLL.Services.Classes
              
         }
 
-        public async Task<bool> DeleteMemberShipAsync(int id)
+        public async Task<bool> DeleteMemberShipAsync(int  memberId, int planId)
         {
             try
             {
-                var memberShip = await unitOfWork.MemberShipRepository.GetAsync(id);
+                var memberShip =( await unitOfWork.MemberShipRepository.GetAllAsync(x => x.MemberId == memberId && x.PlanId == planId)).FirstOrDefault();
                 if (memberShip == null) return false;
+                //if (membership.EndDate.Date <= DateTime.Now.Date) return false;
                 unitOfWork.MemberShipRepository.Delete(memberShip);
                 return await unitOfWork.SaveChangesAsync() > 0;
             }

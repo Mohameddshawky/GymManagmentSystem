@@ -56,8 +56,9 @@
                             <td>@item.EndDate</td>
                             <td>
                                 <div class="d-flex gap-1">
-                                    <form method="post" asp-action="Cancel" asp-route-id="@item.Id" class="m-0">
-                                        @* <input type="hidden" name="id" value="@item.MemberId" />  *@
+                                        <form method="post" asp-action="Cancel"  class="m-0">
+                                            <input type="hidden" name="memberId" value="@item.MemberId" />
+                                            <input type="hidden" name="planId" value="@item.PlanId" />
                                         <button type="submit" class="btn btn-sm btn-danger">
                                             <i class="fas fa-times"></i> Cancel
                                         </button>
