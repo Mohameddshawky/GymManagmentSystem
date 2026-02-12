@@ -13,6 +13,10 @@ namespace GymManagmentBLL.Mapping
         {
             CreateMap<Member, MemberSessionViewModel>()
                 .ForMember(x => x.MemberName, src => src.MapFrom(x => x.Name));
+            CreateMap<MemberSession, MemberSessionViewModel>()
+                .ForMember(x => x.MemberName, src => src.MapFrom(x => x.member.Name))
+                .ForMember(x => x.BookingDate, src => src.MapFrom(x => x.CreatedAt));
+                
 
         }
     }
