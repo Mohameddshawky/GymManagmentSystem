@@ -30,12 +30,15 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IMemberShipService, MemberShipService>();
 builder.Services.AddScoped<ISessionREpository,SessionRepository>(); 
 builder.Services.AddScoped<IMemberShipRepository,MemberShipRepository>(); 
+builder.Services.AddScoped<IMemberSessionRepository,MemberSessionRepository>(); 
+builder.Services.AddScoped<IMemberSesionService,MemberSessionService>(); 
 builder.Services.AddAutoMapper(m => m.AddProfile(new MemberProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new HealthRecordProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new PlanProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new SessionProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new TrainerProfile()));
 builder.Services.AddAutoMapper(m => m.AddProfile(new MemberShipProfile()));
+builder.Services.AddAutoMapper(m => m.AddProfile(new MemberSessionProfile()));
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>
     (
      options =>{

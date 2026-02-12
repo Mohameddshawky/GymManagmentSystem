@@ -12,5 +12,6 @@ namespace GymManagmentDAL.Repositories.Interfaces
         Task<int> SaveChangesAsync();
         public ISessionREpository sessionRepository { get;  }
         public IMemberShipRepository MemberShipRepository { get;  }
+        public IMemberSessionRepository MemberSessionRepository { get;  }
     }
 }

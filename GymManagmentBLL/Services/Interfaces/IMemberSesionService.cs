@@ -10,7 +10,8 @@ namespace GymManagmentBLL.Services.Interfaces
     {
 
         Task<SessionScheduleViewModel> GetSessionsForBookingAndAttendance();
-        Task<IEnumerable<MemberSessionViewModel>> GetMembersForSession(int sessionId);
+        Task<IEnumerable<MemberSessionViewModel>> GetMembersForOnGoingSession(int sessionId);
+        Task<IEnumerable<MemberSessionViewModel>> GetMembersForUpComingSession(int sessionId);
         Task<bool> CreateBooking(int sessionId, int memberId);
         Task<bool> CancelBooking(int memberId, int sessionId);
         Task<bool> MarkAttended(int memberId, int sessionId);

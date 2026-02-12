@@ -8,7 +8,7 @@ using System.Text;
 
 namespace GymManagmentDAL.Repositories
 {
-    internal class MemberSessionRepository : GenericRepository<MemberSession>, IMemberSessionRepository
+    public class MemberSessionRepository : GenericRepository<MemberSession>, IMemberSessionRepository
     {
         private readonly GymDbcontext dbcontext;
 
