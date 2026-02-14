@@ -83,12 +83,13 @@ app.UseRouting();
 app.UseAuthentication();    
 app.UseAuthorization();
 
-app.MapStaticAssets();
+app.UseStaticFiles();
+
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id:int?}")
-    .WithStaticAssets();
+    ;
 //app.MapControllerRoute(
 //    name: "trainers",     name use in redirect to route 
 //    pattern: "Coach/{action}",
