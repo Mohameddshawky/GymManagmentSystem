@@ -9,6 +9,7 @@ using GymManagmentBLL.Services.Classes;
 using GymManagmentBLL.Services.AttachementService;
 using Microsoft.AspNetCore.Identity;
 using GymManagmentDAL.Entites;
+using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,19 +56,41 @@ builder.Services.ConfigureApplicationCookie(options =>
 var app = builder.Build();
 
 // Seed Data
- using (var scope = app.Services.CreateScope())
+using (var scope = app.Services.CreateScope())
 {
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<GymDbcontext>();
-    var pendingMigrations = context.Database.GetPendingMigrations();
-    if (pendingMigrations?.Any()??false)
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    try
     {
-        context.Database.Migrate();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+        var context = services.GetRequiredService<GymDbcontext>();
+        
+        logger.LogInformation("Checking for pending migrations...");
+        var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+        if (pendingMigrations?.Any() ?? false)
+        {
+            logger.LogInformation("Applying migrations...");
+            await context.Database.MigrateAsync();
+        }
+        
+        logger.LogInformation("Seeding Data...");
+        GymDbContextSeeding.SeedData(context, app.Environment.WebRootPath);
+        await IdentitySeeding.SeedDataAsync(roleManager, userManager);
+        logger.LogInformation("Initialization completed successfully.");
     }
-    GymDbContextSeeding.SeedData(context);
-    await IdentitySeeding.SeedDataAsync(roleManager, userManager);
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "An error occurred during database migration or seeding.");
+        // In development, we might want to see the error, but in production, we might want the app to start anyway 
+        // if the database is otherwise reachable, or at least not crash without logs.
+        if (app.Environment.IsDevelopment())
+        {
+            // Optional: throw if you want it to fail fast in dev, but with the 500.30 error 
+            // the goal is to see WHY it failed via logs first.
+            // throw; 
+        }
+    }
 }
 
 // Configure the HTTP request pipeline.

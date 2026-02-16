@@ -11,8 +11,9 @@ namespace GymManagmentDAL.Data.DataSeed
 {
     public static class GymDbContextSeeding
     {
-        public static bool SeedData( GymDbcontext context)
+        public static bool SeedData( GymDbcontext context, string? webRootPath)
         {
+            if (string.IsNullOrEmpty(webRootPath)) return false;
             try
             {
                 var hasPlans = context.plans.Any();
@@ -22,7 +23,7 @@ namespace GymManagmentDAL.Data.DataSeed
 
                 if (!hasCategories)
                 {
-                    var categories = LoadDataFromJson<Category>("categories.json");
+                    var categories = LoadDataFromJson<Category>("categories.json", webRootPath);
                     if (categories.Any())
                     {
                         context.categories.AddRange(categories);
@@ -31,7 +32,7 @@ namespace GymManagmentDAL.Data.DataSeed
                 }
                 if (!hasPlans)
                 {
-                    var plans = LoadDataFromJson<Plan>("plans.json");
+                    var plans = LoadDataFromJson<Plan>("plans.json", webRootPath);
                     if (plans.Any())
                     {
                         context.plans.AddRange(plans);
@@ -47,9 +48,9 @@ namespace GymManagmentDAL.Data.DataSeed
         }
 
 
-        private static List<T> LoadDataFromJson<T>(string fileName) 
+        private static List<T> LoadDataFromJson<T>(string fileName, string webRootPath) 
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files",fileName);
+            var filePath = Path.Combine(webRootPath, "Files", fileName);
             if (!File.Exists(filePath)) throw new FileNotFoundException($"The file {fileName} was not found at path {filePath}.");
 
             string data = File.ReadAllText(filePath);
