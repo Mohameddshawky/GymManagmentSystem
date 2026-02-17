@@ -1,4 +1,7 @@
 ﻿@model CreateMemberShipViewModel
+@{
+    ViewData["Title"] = "New Membership";
+}
 @if (TempData["ErrorMessage"] != null)
 {
     <div id="Alert" class="alert alert-danger alert-dismissible fade show">
