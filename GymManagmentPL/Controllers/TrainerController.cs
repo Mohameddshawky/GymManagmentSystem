@@ -26,14 +26,14 @@ namespace GymManagmentPL.Controllers
         {
             if (id < 0)
             {
-                TempData["ErrorMessage"] = "Invalid Member Id.";
+                TempData["ErrorMessage"] = "Invalid Trainer Id.";
                 return RedirectToAction(nameof(Index));
 
             }
             var trainerDetails = await trainerService.GetTrainerDetailsAsync(id);
             if (trainerDetails == null)
             {
-                TempData["ErrorMessage"] = "Member not found.";
+                TempData["ErrorMessage"] = "Trainer not found.";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -51,9 +51,9 @@ namespace GymManagmentPL.Controllers
             {
                 bool res = await trainerService.CreateTrainerAsync(model);
                 if (res)
-                    TempData["SuccessMessage"] = "Member created successfully.";
+                    TempData["SuccessMessage"] = " Trainer created successfully.";
                 else
-                    TempData["ErrorMessage"] = "Failed to create Member.";
+                    TempData["ErrorMessage"] = "Failed to create Trainer.";
                 return RedirectToAction(nameof(Index));
             }
             else
@@ -104,7 +104,7 @@ namespace GymManagmentPL.Controllers
         {
             if (id < 0)
             {
-                TempData["ErrorMessage"] = "Invalid Member Id.";
+                TempData["ErrorMessage"] = "Invalid Trainer Id.";
                 return RedirectToAction(nameof(Index));
             }
             var res = await trainerService.GetTrainerToUbdateAsync(id);
