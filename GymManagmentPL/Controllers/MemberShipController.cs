@@ -36,13 +36,13 @@ namespace GymManagmentPL.Controllers
             var isCreated = await memberShipService.CreateMemberShipAsync(model);
             if (isCreated)
             {
-                TempData["SuccessMessage"] = "Session created successfully.";
+                TempData["SuccessMessage"] = "MemberShip created successfully.";
                 return RedirectToAction(nameof(Index));
             }
             else
             {
                 await Helper();
-                TempData["ErrorMessage"] = "Failed to create session.";
+                TempData["ErrorMessage"] = "Failed to create MemberShip.";
                 return View(model);
 
             }
@@ -52,9 +52,9 @@ namespace GymManagmentPL.Controllers
         {
             var res = await memberShipService.DeleteMemberShipAsync(memberId, planId);
             if (res)
-                TempData["SuccessMessage"] = "Member deleted successfully.";
+                TempData["SuccessMessage"] = "MemberShip deleted successfully.";
             else
-                TempData["ErrorMessage"] = "Failed to delete Member.";
+                TempData["ErrorMessage"] = "Failed to delete MemberShip.";
             return RedirectToAction(nameof(Index));
 
         }
