@@ -28,7 +28,10 @@ namespace GymManagmentDAL.Data.DataSeed
                         if (!roleExists)
                         {
                             var result = await roleManager.CreateAsync(role);
-
+                            if (!result.Succeeded)
+                            {
+                                throw new Exception($"Failed to create role {role.Name}: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                            }
                         }
                     }
 
@@ -42,11 +45,17 @@ namespace GymManagmentDAL.Data.DataSeed
                         LastName = "Shawky",
                         Email = "shawky1mohamed2@gmail.com",
                         PhoneNumber = "01113560216",
-
-
                     };
-                    await userManager.CreateAsync(superAdminUser, "P@ssw0rd");
-                    await userManager.AddToRoleAsync(superAdminUser, "SuperAdmin");
+                    var result = await userManager.CreateAsync(superAdminUser, "P@ssw0rd");
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(superAdminUser, "SuperAdmin");
+                    }
+                    else
+                    {
+                        throw new Exception($"Failed to create SuperAdmin: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                    }
+
                     var AdminUser = new ApplicationUser
                     {
                         UserName = "SalmaShawky",
@@ -54,18 +63,23 @@ namespace GymManagmentDAL.Data.DataSeed
                         LastName = "Shawky",
                         Email = "salma1mohamed2@gmail.com",
                         PhoneNumber = "01113560215",
-
-
                     };
-                    await userManager.CreateAsync(AdminUser, "P@ssw0rd");
-                    await userManager.AddToRoleAsync(AdminUser, "Admin");
+                    result = await userManager.CreateAsync(AdminUser, "P@ssw0rd");
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(AdminUser, "Admin");
+                    }
+                    else
+                    {
+                        throw new Exception($"Failed to create Admin: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                    }
                 }
                 return true;
             }
             catch (Exception ex)
             {
-                return false;
-
+                Console.WriteLine($"Identity Seeding Failed: {ex.Message}");
+                throw;
             }
         }
     }

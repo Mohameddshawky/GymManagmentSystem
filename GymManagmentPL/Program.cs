@@ -75,9 +75,17 @@ using (var scope = app.Services.CreateScope())
         }
         
         logger.LogInformation("Seeding Data...");
-        GymDbContextSeeding.SeedData(context, app.Environment.WebRootPath);
-        await IdentitySeeding.SeedDataAsync(roleManager, userManager);
-        logger.LogInformation("Initialization completed successfully.");
+        try 
+        {
+            GymDbContextSeeding.SeedData(context, app.Environment.WebRootPath, app.Environment.ContentRootPath);
+            await IdentitySeeding.SeedDataAsync(roleManager, userManager);
+            logger.LogInformation("Initialization completed successfully.");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "A specific error occurred during seeding.");
+            throw; // Re-throw to ensure we see the 500.30/500 if migration/seeding fails critical startup
+        }
     }
     catch (Exception ex)
     {
